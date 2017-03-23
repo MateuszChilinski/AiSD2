@@ -20,102 +20,27 @@ namespace ASD
         /// </remarks>
         public static Edge[][] cyclePartition(this Graph G_o)
         {
-            int size = 10000;
             Graph G = G_o.Clone();
-            Edge[][] cycles = new Edge[size][];
-            bool[] usedVerts = new bool[G.VerticesCount];
-            Stack<int> verts = new Stack<int>();
-            verts.Push(0);
-            int[] prevs = new int[size];
-            for (int i = 0; i < size; i++)
+            Stack<int> verticlesStack = new Stack<int>();
+            verticlesStack.Push(0);
+            List<int> cycleList = new List<int>();
+            bool[] visitedVerticles = new bool[G.VerticesCount];
+            while(verticlesStack.Count != 0)
             {
-                prevs[i] = -1;
-            }
-            int prev;
-            int curr = -1;
-            Queue<int> cyc = new Queue<int>();
-            HashSet<Edge> used = new HashSet<Edge>();
-            int used_all = 0;
-            int k = 0;
-            while (verts.Count != 0 || used_all < G.VerticesCount)
-            {
-                if(verts.Count == 0)
+                int currentVerticle = verticlesStack.Pop();
+                foreach (Edge currentEdge in G.OutEdges(currentVerticle))
                 {
-                    for(int i = 0; i < G.VerticesCount; i++)
+                    if(visitedVerticles[currentEdge.To] && cycleList.Last() != currentEdge.To)
                     {
-                        if(usedVerts[i] == false)
-                        {
-                            verts.Push(i);
-                            break;
-                        }
+                        cycleList.Add(currentEdge.To);
+                        // found cycle!
                     }
+                    verticlesStack.Push(currentEdge.To);
                 }
-                prev = curr;
-                curr = verts.Pop();
-                prevs[curr] = prev;
-                bool exit = false;
-                foreach (Edge e in G.OutEdges(curr))
-                {
-                    if (e.To == prev)
-                        continue;
-                    bool done = false;
-                    if (usedVerts[e.To] == true)
-                    {
-                        prevs[e.To] = curr;
-                        int temp_curr = curr;
-                        int z = 0;
-                        cycles[k] = new Edge[size];
-                        HashSet<int> cycle = new HashSet<int>();
-                        do
-                        {
-                            if (temp_curr == -1)
-                            {
-                                exit = true;
-                                break;
-                            }
-                            if (temp_curr == e.To)
-                            {
-                                done = true;
-                            }
-                            cycle.Add(temp_curr);
-                            G.DelEdge(new Edge(temp_curr, prevs[temp_curr]));
-                            cycles[k][z++] = new Edge(temp_curr, prevs[temp_curr]);
-                            temp_curr = prevs[temp_curr];
-                        }
-                        while ((!cycle.Contains(temp_curr)) && !done);
-                        if (exit) break;
-                        Array.Resize(ref cycles[k++], z);
-
-                        Stack<int> temp_stack = new Stack<int>();
-                        while(verts.Count != 0)
-                        {
-                            int current = verts.Pop();
-                            if(!cycle.Contains(current))
-                            {
-                                temp_stack.Push(current);
-                            }
-                            else
-                            {
-                                usedVerts[current] = false;
-                                prevs[current] = -1;
-                            }
-                        }
-                        while(temp_stack.Count !=0)
-                        {
-                            verts.Push(temp_stack.Pop());
-                        }
-                        break;
-                    }
-                    else
-                    {
-                        verts.Push(e.To);
-                    }
-                }
-                if(usedVerts[curr] != true)
-                    used_all++;
-                usedVerts[curr] = true;
+                cycleList.Add(currentVerticle);
+                visitedVerticles[currentVerticle] = true;
             }
-            Array.Resize(ref cycles, k);
+            Edge[][] cycles = null;
             return cycles;
         }
 
