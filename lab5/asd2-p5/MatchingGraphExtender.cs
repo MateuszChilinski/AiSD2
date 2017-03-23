@@ -25,7 +25,10 @@ namespace ASD
             verticlesStack.Push(0);
             List<int> cycleList = new List<int>();
             bool[] visitedVerticles = new bool[G.VerticesCount];
-            while(verticlesStack.Count != 0)
+            int k = 0;
+            List<int> temporaryCycleList = new List<int>();
+
+            while (verticlesStack.Count != 0)
             {
                 int currentVerticle = verticlesStack.Pop();
                 foreach (Edge currentEdge in G.OutEdges(currentVerticle))
@@ -33,6 +36,16 @@ namespace ASD
                     if(visitedVerticles[currentEdge.To] && cycleList.Last() != currentEdge.To)
                     {
                         cycleList.Add(currentEdge.To);
+                        cycleList.Reverse();
+                        int currentElement = cycleList.First();
+                        do
+                        {
+                            temporaryCycleList.Add(currentElement);
+                            cycleList.RemoveAt(0);
+                            currentElement = cycleList.First();
+                        }
+                        while (currentElement != currentVerticle);
+                        k++;
                         // found cycle!
                     }
                     verticlesStack.Push(currentEdge.To);
@@ -40,7 +53,23 @@ namespace ASD
                 cycleList.Add(currentVerticle);
                 visitedVerticles[currentVerticle] = true;
             }
-            Edge[][] cycles = null;
+            Edge[][] cycles = new Edge[k+1][];
+            for(int i = 0; i < k; i++)
+            {
+                cycles[i] = new Edge[temporaryCycleList.Count];
+                for(int z = 0; z < temporaryCycleList.Count; z++)
+                {
+                    if(z == 0)
+                    {
+                        cycles[i][z] = new Edge(temporaryCycleList.Last(), temporaryCycleList.First());
+                        continue;
+                    }
+                    else
+                    {
+                        cycles[i][z] = new Edge(temporaryCycleList.ElementAt(z - 1), temporaryCycleList.ElementAt(z));
+                    }
+                }
+            }
             return cycles;
         }
 
