@@ -160,8 +160,8 @@ namespace ASD
             C4.AddEdge(0, 3);
             C4.AddEdge(2, 1);
             C4.AddEdge(2, 3);
-            cyclePartitionTests.TestCases.Add(new CyclePartitionTestCase(5, null, C4));
-            matchingTests.TestCases.Add(new PerfectMatchingTestCase(5, null, C4));
+            //cyclePartitionTests.TestCases.Add(new CyclePartitionTestCase(5, null, C4));
+            //matchingTests.TestCases.Add(new PerfectMatchingTestCase(5, null, C4));
 
             Graph DoubleC4 = new AdjacencyMatrixGraph(false, 8);
             DoubleC4.AddEdge(0, 1);
@@ -174,22 +174,22 @@ namespace ASD
             DoubleC4.AddEdge(6, 5);
             DoubleC4.AddEdge(6, 7);
 
-            cyclePartitionTests.TestCases.Add(new CyclePartitionTestCase(5, null, DoubleC4));
-            matchingTests.TestCases.Add(new PerfectMatchingTestCase(5, null, DoubleC4));
+            //cyclePartitionTests.TestCases.Add(new CyclePartitionTestCase(5, null, DoubleC4));
+            //matchingTests.TestCases.Add(new PerfectMatchingTestCase(5, null, DoubleC4));
 
             Graph matching = new AdjacencyListsGraph<SimpleAdjacencyList>(false, 20);
             for (int i = 0; i < 10; i++)
                 matching.AddEdge((3 * i) % 20, (3 * i + 10) % 20);
 
-            matchingTests.TestCases.Add(new PerfectMatchingTestCase(5, null, matching));
+            //matchingTests.TestCases.Add(new PerfectMatchingTestCase(5, null, matching));
 
             Graph tripleC6 = new AdjacencyListsGraph<HashTableAdjacencyList>(false, 18);
             for (int i = 0; i < 3; i++)
                 for (int j = 0; j < 6; j++)
                     tripleC6.AddEdge(6 * i + j, 6 * i + (j + 1) % 6);
 
-            cyclePartitionTests.TestCases.Add(new CyclePartitionTestCase(5, null, tripleC6));
-            matchingTests.TestCases.Add(new PerfectMatchingTestCase(5, null, tripleC6));
+            //cyclePartitionTests.TestCases.Add(new CyclePartitionTestCase(5, null, tripleC6));
+            //matchingTests.TestCases.Add(new PerfectMatchingTestCase(5, null, tripleC6));
 
             Graph C4free = new AdjacencyListsGraph<HashTableAdjacencyList>(false, 54);
             for (int c = 0; c < 3; c++)

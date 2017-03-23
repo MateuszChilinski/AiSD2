@@ -27,6 +27,10 @@ namespace ASD
             Stack<int> verts = new Stack<int>();
             verts.Push(0);
             int[] prevs = new int[size];
+            for (int i = 0; i < size; i++)
+            {
+                prevs[i] = -1;
+            }
             int prev;
             int curr = -1;
             Queue<int> cyc = new Queue<int>();
@@ -49,10 +53,12 @@ namespace ASD
                 prev = curr;
                 curr = verts.Pop();
                 prevs[curr] = prev;
+                bool exit = false;
                 foreach (Edge e in G.OutEdges(curr))
                 {
                     if (e.To == prev)
                         continue;
+                    bool done = false;
                     if (usedVerts[e.To] == true)
                     {
                         prevs[e.To] = curr;
@@ -62,23 +68,42 @@ namespace ASD
                         HashSet<int> cycle = new HashSet<int>();
                         do
                         {
+                            if (temp_curr == -1)
+                            {
+                                exit = true;
+                                break;
+                            }
+                            if (temp_curr == e.To)
+                            {
+                                done = true;
+                            }
                             cycle.Add(temp_curr);
                             G.DelEdge(new Edge(temp_curr, prevs[temp_curr]));
                             cycles[k][z++] = new Edge(temp_curr, prevs[temp_curr]);
-                            if (verts.Contains(temp_curr))
-                            {
-                                int check = verts.Pop();
-                                if (check != temp_curr)
-                                    verts.Push(check);
-                                else
-                                {
-                                    usedVerts[check] = false;
-                                }
-                            }
                             temp_curr = prevs[temp_curr];
                         }
-                        while ((!cycle.Contains(temp_curr)) && temp_curr != curr);
+                        while ((!cycle.Contains(temp_curr)) && !done);
+                        if (exit) break;
                         Array.Resize(ref cycles[k++], z);
+
+                        Stack<int> temp_stack = new Stack<int>();
+                        while(verts.Count != 0)
+                        {
+                            int current = verts.Pop();
+                            if(!cycle.Contains(current))
+                            {
+                                temp_stack.Push(current);
+                            }
+                            else
+                            {
+                                usedVerts[current] = false;
+                                prevs[current] = -1;
+                            }
+                        }
+                        while(temp_stack.Count !=0)
+                        {
+                            verts.Push(temp_stack.Pop());
+                        }
                         break;
                     }
                     else
@@ -89,7 +114,6 @@ namespace ASD
                 if(usedVerts[curr] != true)
                     used_all++;
                 usedVerts[curr] = true;
-                
             }
             Array.Resize(ref cycles, k);
             return cycles;

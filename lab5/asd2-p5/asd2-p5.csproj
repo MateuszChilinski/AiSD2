@@ -36,12 +36,14 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="Graph">
-      <HintPath>..\..\asd2-3\asd2-3\Graph.dll</HintPath>
+    <Reference Include="Graph, Version=7.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Graph.dll</HintPath>
     </Reference>
     <Reference Include="System" />
-    <Reference Include="TestSet">
-      <HintPath>..\..\asd2-3\asd2-3\TestSet.dll</HintPath>
+    <Reference Include="TestSet, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\TestSet.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
