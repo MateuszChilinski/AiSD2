@@ -143,14 +143,18 @@ namespace ASD
         public static Graph perfectMatching(this Graph G)
         {
             Graph Gc = G.Clone();
-            Edge[][] cycles = cyclePartition(G);
-            for(int i = 0; i < cycles.Length; i++)
+            int howMany = (int) Math.Log(Gc.OutDegree(0), 2);
+            for (int k = 0; k < howMany; k++)
             {
-                Edge[] cycle = cycles[i];
-                for(int j = 0; j < cycle.Length; j++)
+                Edge[][] cycles = cyclePartition(Gc);
+                for (int i = 0; i < cycles.Length; i++)
                 {
-                    if(j%2 == 0)
-                    Gc.DelEdge(cycle[j]);
+                    Edge[] cycle = cycles[i];
+                    for (int j = 0; j < cycle.Length; j++)
+                    {
+                        if (j % 2 == 0)
+                            Gc.DelEdge(cycle[j]);
+                    }
                 }
             }
             return Gc;

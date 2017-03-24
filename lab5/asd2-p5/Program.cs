@@ -30,23 +30,23 @@ namespace ASD
                 message = "incorrect result: null";
                 return;
             }
-            foreach(Edge[] cycle in result)
+            foreach (Edge[] cycle in result)
             {
-                for(int i=0;i<cycle.GetLength(0);i++)
+                for (int i = 0; i < cycle.GetLength(0); i++)
                 {
-                    if(cycle[i].To != cycle[(i+1)%cycle.GetLength(0)].From)
+                    if (cycle[i].To != cycle[(i + 1) % cycle.GetLength(0)].From)
                     {
                         resultCode = Result.BadResult;
                         message = "incorrect result: edges " + cycle[i].ToString() + " and " + cycle[(i + 1) % cycle.GetLength(0)].ToString() + " consecutive on a cycle";
                         return;
                     }
-                    if(G.GetEdgeWeight(cycle[i].From,cycle[i].To).IsNaN())
+                    if (G.GetEdgeWeight(cycle[i].From, cycle[i].To).IsNaN())
                     {
                         resultCode = Result.BadResult;
                         message = "incorrect result: a cycle contains nonexisting edge " + cycle[i].ToString();
                         return;
                     }
-                    if(!GCopy.DelEdge(cycle[i]))
+                    if (!GCopy.DelEdge(cycle[i]))
                     {
                         resultCode = Result.BadResult;
                         message = "incorrect result: edge " + cycle[i].ToString() + " contained in more than one cycle";
@@ -54,7 +54,7 @@ namespace ASD
                     }
                 }
             }
-            if(GCopy.EdgesCount>0)
+            if (GCopy.EdgesCount > 0)
             {
                 resultCode = Result.BadResult;
                 message = "incorrect result: " + GCopy.EdgesCount.ToString() + "edges are not contained in any cycle";
@@ -83,23 +83,23 @@ namespace ASD
 
         public override void VerifyTestCase(out Result resultCode, out string message)
         {
-            if(result==null)
+            if (result == null)
             {
                 resultCode = Result.BadResult;
                 message = "incorrect result: null";
                 return;
             }
-            for(int i=0;i<G.VerticesCount;i++)
-                if(result.OutDegree(i)!=1)
+            for (int i = 0; i < G.VerticesCount; i++)
+                if (result.OutDegree(i) != 1)
                 {
                     resultCode = Result.BadResult;
                     message = "incorrect result: vertex " + i.ToString() + " has degree " + result.OutDegree(i);
                     return;
                 }
-            for(int i=0;i<G.VerticesCount;i++)
+            for (int i = 0; i < G.VerticesCount; i++)
             {
-                foreach(Edge e in G.OutEdges(i))
-                    if(G.GetEdgeWeight(e.From, e.To).IsNaN())
+                foreach (Edge e in G.OutEdges(i))
+                    if (G.GetEdgeWeight(e.From, e.To).IsNaN())
                     {
                         resultCode = Result.BadResult;
                         message = "incorrect result: returning nonexistant edge {" + e.From.ToString() + ", " + e.To.ToString() + "}";
@@ -131,7 +131,7 @@ namespace ASD
                         //    v2 = 2 * rand.Next(vertices) + 1;
                         while (!ret.GetEdgeWeight(2 * curi, v2).IsNaN())
                             v2 = 2 * rand.Next(vertices) + 1;
-                        if(ret.OutDegree(v2)!=j)
+                        if (ret.OutDegree(v2) != j)
                         {
                             int tmpi = ret.OutEdges(v2).ToArray()[rand.Next(ret.OutDegree(v2))].To / 2;
                             while (ret.OutDegree(2 * tmpi) != j + 1)
@@ -206,7 +206,7 @@ namespace ASD
                         C4free.AddEdge(18 * c + 6 * i + j, 18 * ((c + 1) % 3) + 6 * ((i + 1) % 3) + (j + 1) % 6);
 
             cyclePartitionTests.TestCases.Add(new CyclePartitionTestCase(5, null, C4free));
-            matchingTests.TestCases.Add(new PerfectMatchingTestCase(5, null, C4free)); // tu blad testu
+            matchingTests.TestCases.Add(new PerfectMatchingTestCase(5, null, C4free));
 
             cyclePartitionTests.TestCases.Add(new CyclePartitionTestCase(5, null, randomRegularBipartite(100, 10, 13)));
             cyclePartitionTests.TestCases.Add(new CyclePartitionTestCase(5, null, randomRegularBipartite(100, 40, 14)));
@@ -214,16 +214,76 @@ namespace ASD
             cyclePartitionTests.TestCases.Add(new CyclePartitionTestCase(5, null, randomRegularBipartite(100, 16, 16)));
 
 
-            matchingTests.TestCases.Add(new CyclePartitionTestCase(5, null, randomRegularBipartite(300, 4, 13)));
-            matchingTests.TestCases.Add(new CyclePartitionTestCase(5, null, randomRegularBipartite(200, 8, 14)));
-            matchingTests.TestCases.Add(new CyclePartitionTestCase(5, null, randomRegularBipartite(200, 16, 15)));
-            matchingTests.TestCases.Add(new CyclePartitionTestCase(5, null, randomRegularBipartite(100, 32, 16)));
+            matchingTests.TestCases.Add(new PerfectMatchingTestCase(5, null, randomRegularBipartite(300, 4, 13)));
+            matchingTests.TestCases.Add(new PerfectMatchingTestCase(5, null, randomRegularBipartite(200, 8, 14)));
+            matchingTests.TestCases.Add(new PerfectMatchingTestCase(5, null, randomRegularBipartite(200, 16, 15)));
+            matchingTests.TestCases.Add(new PerfectMatchingTestCase(5, null, randomRegularBipartite(100, 32, 16)));
 
             Console.WriteLine("***************************   Cycle partition tests  ***************************");
             cyclePartitionTests.PreformTests(true, false);
 
             Console.WriteLine("***************************  Perfect matching tests  ***************************");
             matchingTests.PreformTests(true, false);
+
+
+
+            Console.WriteLine("**************************   Custom tests *************************");
+            Console.WriteLine("Timing a boilerplate task");
+            long boilerplateTaskTimeElapsed = PerformBoilerplateTask();
+            Console.WriteLine("Boilerplate task done. Results will be shown below");
+
+
+
+            int baseSeed = 15;  // will be incremented for every test
+            int customTestSetSize = 15;
+            TestSet customPartitionTests = new TestSet();
+            TestSet customMatchingTests = new TestSet();
+            Console.WriteLine("Generating test cases, this may take a while");
+            for (int i = 0; i < customTestSetSize; i++)
+            {
+                Random r = new Random(baseSeed);
+                int vertices = r.Next(100, 400);
+                int degree = 2 * r.Next(2, 40);
+                customPartitionTests.TestCases.Add(new CyclePartitionTestCase(5, null, randomRegularBipartite(vertices, degree, baseSeed++)));
+            }
+
+            for (int i = 0; i < customTestSetSize; i++)
+            {
+                Random r = new Random(baseSeed);
+                int vertices = r.Next(100, 400);
+                int degree = (int)Math.Pow(2, r.Next(2, 7));
+                customMatchingTests.TestCases.Add(new PerfectMatchingTestCase(5, null, randomRegularBipartite(vertices, degree, baseSeed++)));
+            }
+
+            var stopwatch = System.Diagnostics.Stopwatch.StartNew();
+            // Preform tests... (Why do they have a typo in the test library? Even after a month)
+            customPartitionTests.PreformTests(true, false);
+            stopwatch.Stop();
+
+            long partitionTestsTimeElapsed = stopwatch.ElapsedMilliseconds;
+
+            stopwatch.Restart();
+            customMatchingTests.PreformTests(true, false);
+            stopwatch.Stop();
+            long matchingTestsTimeElapsed = stopwatch.ElapsedMilliseconds;
+
+            Console.WriteLine("Custom tests performance metrics");
+            Console.WriteLine("Boilerplate task: {0,5} ms", boilerplateTaskTimeElapsed);
+            Console.WriteLine("Partition tests: {0,5} ms        ({1:F3} times the boilerplate time)", partitionTestsTimeElapsed, (double)partitionTestsTimeElapsed / boilerplateTaskTimeElapsed);
+            Console.WriteLine("Matching tests:  {0,5} ms        ({1:F3} times the boilerplate time)", matchingTestsTimeElapsed, (double)matchingTestsTimeElapsed / boilerplateTaskTimeElapsed);
+        }
+
+        static long PerformBoilerplateTask()
+        {
+            RandomGraphGenerator rgg = new RandomGraphGenerator();
+            var stopwatch = System.Diagnostics.Stopwatch.StartNew();
+            Graph boilerplateGraph = rgg.UndirectedGraph(typeof(AdjacencyMatrixGraph), 100, 0.9);
+            int cc;
+            for (int i = 0; i < 500; i++)
+                boilerplateGraph.GeneralSearchAll<EdgesStack>(null, null, null, out cc);
+
+            stopwatch.Stop();
+            return stopwatch.ElapsedMilliseconds;
         }
     }
 }
