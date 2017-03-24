@@ -206,7 +206,7 @@ namespace ASD
                         C4free.AddEdge(18 * c + 6 * i + j, 18 * ((c + 1) % 3) + 6 * ((i + 1) % 3) + (j + 1) % 6);
 
             cyclePartitionTests.TestCases.Add(new CyclePartitionTestCase(5, null, C4free));
-            matchingTests.TestCases.Add(new PerfectMatchingTestCase(5, null, C4free));
+            matchingTests.TestCases.Add(new PerfectMatchingTestCase(5, null, C4free)); // tu blad testu
 
             cyclePartitionTests.TestCases.Add(new CyclePartitionTestCase(5, null, randomRegularBipartite(100, 10, 13)));
             cyclePartitionTests.TestCases.Add(new CyclePartitionTestCase(5, null, randomRegularBipartite(100, 40, 14)));

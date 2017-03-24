@@ -142,7 +142,18 @@ namespace ASD
         /// </remarks>
         public static Graph perfectMatching(this Graph G)
         {
-            return null;
+            Graph Gc = G.Clone();
+            Edge[][] cycles = cyclePartition(G);
+            for(int i = 0; i < cycles.Length; i++)
+            {
+                Edge[] cycle = cycles[i];
+                for(int j = 0; j < cycle.Length; j++)
+                {
+                    if(j%2 == 0)
+                    Gc.DelEdge(cycle[j]);
+                }
+            }
+            return Gc;
         }
     }
 }
