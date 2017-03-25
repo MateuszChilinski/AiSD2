@@ -105,12 +105,9 @@ namespace ASD
                             {
                                 break;
                             }
-                            if (!toRemoveFromStack.Contains(checkVert))
-                            {
-                                z.Enqueue(checkVert);
-                            }
-                            else
+                            if (toRemoveFromStack.Contains(checkVert))
                                 toRemoveFromStack.Remove(checkVert);
+                            z.Enqueue(checkVert);
                         }
                         z.Reverse();
                         while (z.Count != 0)
