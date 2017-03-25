@@ -25,10 +25,10 @@ namespace ASD
             verticlesStack.Push(0);
             List<Edge> cycleList = new List<Edge>();
             bool[] visitedVerticles = new bool[G.VerticesCount];
-            int k = 0;
             List<Edge> temporaryCycleList = new List<Edge>();
             List<List<Edge>> temporaryCycles = new List<List<Edge>>();
-            while (verticlesStack.Count != 0 || G.EdgesCount != 0)
+            Edge prev = new Edge();
+            while (verticlesStack.Count != 0 || G.EdgesCount != 0)//szukanie w glab
             {
                 if(verticlesStack.Count == 0)
                 {
@@ -44,12 +44,9 @@ namespace ASD
                         break;
                 }
                 int currentVerticle = verticlesStack.Pop();
-                if (visitedVerticles[currentVerticle])
-                    continue;
                 int i = 0;
-                Edge prev=new Edge();
                 bool add = true;
-                foreach (Edge cE in G.OutEdges(currentVerticle))
+                foreach (Edge cE in G.OutEdges(currentVerticle))//iteracja po krawedziach
                 {
                     if (cE.From == cE.To)
                         break;
@@ -76,7 +73,7 @@ namespace ASD
                         cycleList.Add(currentEdge);
                     }
                     prev = currentEdge;
-                    if (visitedVerticles[currentEdge.To])
+                    if (visitedVerticles[currentEdge.To]) //odzyskiwanie cyklu
                     {
                         if (!already_added)
                             cycleList.Add(currentEdge);
@@ -97,8 +94,7 @@ namespace ASD
                         cycleList.Remove(currentElement);
                         G.DelEdge(currentElement);
                         Queue<int> z = new Queue<int>();
-                        k++;
-                        while (verticlesStack.Count != 0)
+                        while (verticlesStack.Count != 0)//usuwanie ze stosu
                         {
                             int checkVert = verticlesStack.Pop();
                             if (toRemoveFromStack.Count == 0)
@@ -107,12 +103,6 @@ namespace ASD
                             }
                             if (toRemoveFromStack.Contains(checkVert))
                                 toRemoveFromStack.Remove(checkVert);
-                            z.Enqueue(checkVert);
-                        }
-                        z.Reverse();
-                        while (z.Count != 0)
-                        {
-                            verticlesStack.Push(z.Dequeue());
                         }
                         temporaryCycles.Add(temporaryCycleList);
                         temporaryCycleList = new List<Edge>();
