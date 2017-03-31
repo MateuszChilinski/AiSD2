@@ -34,7 +34,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Graph">
-      <HintPath>..\..\asd2-3\asd2-3\Graph.dll</HintPath>
+      <HintPath>..\..\Graph.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -45,7 +45,7 @@
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
     <Reference Include="TestSet">
-      <HintPath>..\..\asd2-3\asd2-3\TestSet.dll</HintPath>
+      <HintPath>..\..\TestSet.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

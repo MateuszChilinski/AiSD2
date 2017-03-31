@@ -41,10 +41,10 @@ namespace Pathfinder
                 }
                 if (!expectedLength.HasValue && !result.HasValue)
                 {
-                    message = path==null ? $"OK, no second path exists" : "inconsistent result (returned value: null, path: not null)" ;
-                    return path==null;
+                    message = path == null ? $"OK, no second path exists" : "inconsistent result (returned value: null, path: not null)";
+                    return path == null;
                 }
-                if (expectedLength.Value !=result.Value)
+                if (expectedLength.Value != result.Value)
                 {
                     message = $"wrong length, expected {expectedLength}, returned {result}";
                     return false;
@@ -175,7 +175,7 @@ namespace Pathfinder
                         vertices.Add(e.To);
                         first = false;
                     }
-                   else if (vertices.Contains(e.To))
+                    else if (vertices.Contains(e.To))
                     {
                         message = "vertex repeated on a path";
                         return false;
@@ -199,7 +199,7 @@ namespace Pathfinder
             Graph g;
 
             #region undirected, with repetitions
-            
+
             g = new AdjacencyListsGraph<HashTableAdjacencyList>(false, 5);
             g.AddEdge(0, 1, 1);
             g.AddEdge(1, 2, 1);
@@ -230,7 +230,6 @@ namespace Pathfinder
             g.AddEdge(2, 4, 5);
             undirectedRep.TestCases.Add(new RepSecondPathTestCase(10, g, 0, 4, 9));
 
-
             g = new AdjacencyListsGraph<HashTableAdjacencyList>(false, 6);
             g.AddEdge(0, 1, 1);
             g.AddEdge(1, 2, 1);
@@ -245,7 +244,7 @@ namespace Pathfinder
                 for (int j = i + 1; j < 100; ++j)
                 {
                     if (rnd.Next(10) <= 2)
-                        g.AddEdge(i, j, 1+rnd.Next(100));
+                        g.AddEdge(i, j, 1 + rnd.Next(100));
                 }
             undirectedRep.TestCases.Add(new RepSecondPathTestCase(10, g, 0, 99, 21));
 
@@ -255,7 +254,7 @@ namespace Pathfinder
                 for (int j = i + 1; j < 100; ++j)
                 {
                     if (rnd.Next(10) <= 3)
-                        g.AddEdge(i, j, 1+rnd.Next(100));
+                        g.AddEdge(i, j, 1 + rnd.Next(100));
                 }
             undirectedRep.TestCases.Add(new RepSecondPathTestCase(10, g, 0, 99, 23));
 
@@ -264,14 +263,14 @@ namespace Pathfinder
                 for (int j = i + 1; j < 1000; ++j)
                 {
                     if (rnd.Next(10) <= 3)
-                        g.AddEdge(i, j, 1+rnd.Next(100));
+                        g.AddEdge(i, j, 1 + rnd.Next(100));
                 }
             undirectedRep.TestCases.Add(new RepSecondPathTestCase(10, g, 0, 99, 6));
 
             #endregion
 
             #region directed, with repetitions
-            
+
             g = new AdjacencyListsGraph<HashTableAdjacencyList>(true, 5);
             g.AddEdge(0, 1, 1);
             g.AddEdge(1, 2, 1);
@@ -310,16 +309,16 @@ namespace Pathfinder
             g.AddEdge(0, 4, 1);
             g.AddEdge(4, 5, 1);
             g.AddEdge(5, 3, 1);
-            directedRep.TestCases.Add(new RepSecondPathTestCase(10, g, 0, 3,  3));
+            directedRep.TestCases.Add(new RepSecondPathTestCase(10, g, 0, 3, 3));
 
             g = new AdjacencyListsGraph<HashTableAdjacencyList>(true, 100);
             for (int i = 0; i < 100; ++i)
                 for (int j = i + 1; j < 100; ++j)
                 {
                     if (rnd.Next(10) <= 2)
-                        g.AddEdge(i, j, 1+rnd.Next(100));
+                        g.AddEdge(i, j, 1 + rnd.Next(100));
                     if (rnd.Next(10) <= 2)
-                        g.AddEdge(j, i, 1+rnd.Next(100));
+                        g.AddEdge(j, i, 1 + rnd.Next(100));
                 }
             directedRep.TestCases.Add(new RepSecondPathTestCase(10, g, 0, 4, 24));
 
@@ -328,9 +327,9 @@ namespace Pathfinder
                 for (int j = i + 1; j < 100; ++j)
                 {
                     if (rnd.Next(10) <= 2)
-                        g.AddEdge(i, j, 1+rnd.Next(100));
+                        g.AddEdge(i, j, 1 + rnd.Next(100));
                     if (rnd.Next(10) <= 2)
-                        g.AddEdge(j, i, 1+rnd.Next(100));
+                        g.AddEdge(j, i, 1 + rnd.Next(100));
                 }
             directedRep.TestCases.Add(new RepSecondPathTestCase(10, g, 0, 99, 22));
 
@@ -339,9 +338,9 @@ namespace Pathfinder
                 for (int j = i + 1; j < 1000; ++j)
                 {
                     if (rnd.Next(10) <= 3)
-                        g.AddEdge(i, j, 1+rnd.Next(100));
+                        g.AddEdge(i, j, 1 + rnd.Next(100));
                     if (rnd.Next(10) <= 3)
-                        g.AddEdge(j, i, 1+rnd.Next(100));
+                        g.AddEdge(j, i, 1 + rnd.Next(100));
                 }
             directedRep.TestCases.Add(new RepSecondPathTestCase(10, g, 0, 99, 5));
             #endregion
@@ -393,7 +392,7 @@ namespace Pathfinder
                 for (int j = i + 1; j < 100; ++j)
                 {
                     if (rnd.Next(10) <= 2)
-                        g.AddEdge(i, j, 1+rnd.Next(100));
+                        g.AddEdge(i, j, 1 + rnd.Next(100));
                 }
             undirectedSimple.TestCases.Add(new SimpleSecondPathTestCase(10, g, 0, 99, 14));
 
@@ -402,7 +401,7 @@ namespace Pathfinder
                 for (int j = i + 1; j < 100; ++j)
                 {
                     if (rnd.Next(10) <= 2)
-                        g.AddEdge(i, j, 1+rnd.Next(100));
+                        g.AddEdge(i, j, 1 + rnd.Next(100));
                 }
             undirectedSimple.TestCases.Add(new SimpleSecondPathTestCase(10, g, 0, 99, 29));
 
@@ -411,13 +410,13 @@ namespace Pathfinder
                 for (int j = i + 1; j < 100; ++j)
                 {
                     if (rnd.Next(10) <= 2)
-                        g.AddEdge(i, j, 1+rnd.Next(100));
+                        g.AddEdge(i, j, 1 + rnd.Next(100));
                 }
             undirectedSimple.TestCases.Add(new SimpleSecondPathTestCase(10, g, 0, 99, 24));
             #endregion
 
             #region directed, without repetitions
-          
+
             g = new AdjacencyListsGraph<HashTableAdjacencyList>(true, 5);
             g.AddEdge(0, 1, 1);
             g.AddEdge(1, 2, 1);
@@ -458,6 +457,7 @@ namespace Pathfinder
             g.AddEdge(5, 3, 1);
             directedSimple.TestCases.Add(new SimpleSecondPathTestCase(10, g, 0, 3, 3));
 
+            // Test 6
             g = new AdjacencyListsGraph<HashTableAdjacencyList>(true, 100);
             for (int i = 0; i < 100; ++i)
                 for (int j = i + 1; j < 100; ++j)
@@ -500,8 +500,192 @@ namespace Pathfinder
             undirectedSimple.PreformTests(true, false);
             Console.WriteLine("Path without repetitions, directed graphs");
             directedSimple.PreformTests(true, false);
+
+
+            #region custom, additional tests
+            RandomGraphGenerator rgg = new RandomGraphGenerator(1234);
+
+            Console.WriteLine("Custom tests");
+
+            Console.WriteLine("Timing a boilerplate task");
+            long boilerplateTaskTimeElapsed = PerformBoilerplateTask();
+            Console.WriteLine("Boilerplate task done. Results will be shown below");
+
+            Console.WriteLine("Generating test cases, this may take a while...");
+
+            #region custom undirected, with repetitions
+            TestSet undirectedWithRepetitions = new TestSet();
+            g = rgg.UndirectedGraph(typeof(AdjacencyMatrixGraph), 100, 0.8, 1, 100, true);
+            undirectedWithRepetitions.TestCases.Add(new RepSecondPathTestCase(10, g, 0, 99, 9));
+
+            g = rgg.UndirectedGraph(typeof(AdjacencyMatrixGraph), 100, 0.5, 1, 100, true);
+            undirectedWithRepetitions.TestCases.Add(new RepSecondPathTestCase(10, g, 0, 99, 11));
+
+            g = rgg.UndirectedGraph(typeof(AdjacencyMatrixGraph), 100, 0.2, 1, 100, true);
+            undirectedWithRepetitions.TestCases.Add(new RepSecondPathTestCase(10, g, 0, 99, 24));
+
+            g = rgg.UndirectedGraph(typeof(AdjacencyMatrixGraph), 1000, 0.8, 1, 100, true);
+            undirectedWithRepetitions.TestCases.Add(new RepSecondPathTestCase(10, g, 0, 999, 4));
+
+            g = rgg.UndirectedGraph(typeof(AdjacencyMatrixGraph), 1000, 0.2, 1, 100, true);
+            undirectedWithRepetitions.TestCases.Add(new RepSecondPathTestCase(10, g, 0, 999, 7));
+
+            g = rgg.UndirectedGraph(typeof(AdjacencyMatrixGraph), 1000, 1, 1, 100, true);
+            undirectedWithRepetitions.TestCases.Add(new RepSecondPathTestCase(10, g, 0, 999, 4));
+
+            g = rgg.UndirectedGraph(typeof(AdjacencyListsGraph<AVLAdjacencyList>), 1500, 0.75, 1, 100, true);
+            undirectedWithRepetitions.TestCases.Add(new RepSecondPathTestCase(10, g, 0, 1499, 3));
+
+            g = rgg.UndirectedGraph(typeof(AdjacencyListsGraph<AVLAdjacencyList>), 1500, 0, 1, 100, true);
+            undirectedWithRepetitions.TestCases.Add(new RepSecondPathTestCase(10, g, 0, 1499, null));
+            #endregion
+
+            #region custom directed, with repetitions
+            TestSet directedWithRepetitions = new TestSet();
+            g = new AdjacencyMatrixGraph(true, 3);
+            g.AddEdge(0, 1, 20);
+            g.AddEdge(0, 2, 30);
+            g.AddEdge(1, 2, 1);
+            g.AddEdge(2, 1, 2);
+            directedWithRepetitions.TestCases.Add(new RepSecondPathTestCase(10, g, 0, 2, 30));
+
+            g = rgg.DirectedGraph(typeof(AdjacencyMatrixGraph), 100, 0.8, 1, 100, true);
+            directedWithRepetitions.TestCases.Add(new RepSecondPathTestCase(10, g, 0, 99, 10));
+
+            g = rgg.DirectedGraph(typeof(AdjacencyMatrixGraph), 100, 0.5, 1, 100, true);
+            directedWithRepetitions.TestCases.Add(new RepSecondPathTestCase(10, g, 0, 99, 14));
+
+            g = rgg.DirectedGraph(typeof(AdjacencyMatrixGraph), 100, 0.2, 1, 100, true);
+            directedWithRepetitions.TestCases.Add(new RepSecondPathTestCase(10, g, 0, 99, 30));
+
+            g = rgg.DirectedGraph(typeof(AdjacencyMatrixGraph), 1000, 0.8, 1, 100, true);
+            directedWithRepetitions.TestCases.Add(new RepSecondPathTestCase(10, g, 0, 999, 5));
+
+            g = rgg.DirectedGraph(typeof(AdjacencyMatrixGraph), 1000, 0.2, 1, 100, true);
+            directedWithRepetitions.TestCases.Add(new RepSecondPathTestCase(10, g, 0, 999, 9));
+
+            g = rgg.DirectedGraph(typeof(AdjacencyMatrixGraph), 1000, 1, 1, 100, true);
+            directedWithRepetitions.TestCases.Add(new RepSecondPathTestCase(10, g, 0, 999, 3));
+
+            g = rgg.DirectedGraph(typeof(AdjacencyListsGraph<AVLAdjacencyList>), 1500, 0.75, 1, 100, true);
+            directedWithRepetitions.TestCases.Add(new RepSecondPathTestCase(10, g, 0, 1499, 4));
+
+            g = rgg.DirectedGraph(typeof(AdjacencyListsGraph<AVLAdjacencyList>), 1500, 0, 1, 100, true);
+            directedWithRepetitions.TestCases.Add(new RepSecondPathTestCase(10, g, 0, 1499, null));
+            #endregion
+
+            #region custom undirected, without repetitions
+            TestSet undirectedWithoutRepetitions = new TestSet();
+            g = rgg.UndirectedGraph(typeof(AdjacencyMatrixGraph), 100, 0.8, 1, 100, true);
+            undirectedWithoutRepetitions.TestCases.Add(new SimpleSecondPathTestCase(10, g, 0, 99, 8));
+
+            g = rgg.UndirectedGraph(typeof(AdjacencyMatrixGraph), 100, 0.5, 1, 100, true);
+            undirectedWithoutRepetitions.TestCases.Add(new SimpleSecondPathTestCase(10, g, 0, 99, 11));
+
+            g = rgg.UndirectedGraph(typeof(AdjacencyMatrixGraph), 100, 0.2, 1, 100, true);
+            undirectedWithoutRepetitions.TestCases.Add(new SimpleSecondPathTestCase(10, g, 0, 99, 20));
+
+            g = rgg.UndirectedGraph(typeof(AdjacencyMatrixGraph), 1000, 0.8, 1, 100, true);
+            undirectedWithoutRepetitions.TestCases.Add(new SimpleSecondPathTestCase(10, g, 0, 999, 4));
+
+            g = rgg.UndirectedGraph(typeof(AdjacencyMatrixGraph), 1000, 0.2, 1, 100, true);
+            undirectedWithoutRepetitions.TestCases.Add(new SimpleSecondPathTestCase(10, g, 0, 999, 9));
+
+            g = rgg.UndirectedGraph(typeof(AdjacencyMatrixGraph), 1000, 1, 1, 100, true);
+            undirectedWithoutRepetitions.TestCases.Add(new SimpleSecondPathTestCase(10, g, 0, 999, 4));
+
+            g = rgg.UndirectedGraph(typeof(AdjacencyListsGraph<AVLAdjacencyList>), 1500, 0.75, 1, 100, true);
+            undirectedWithoutRepetitions.TestCases.Add(new SimpleSecondPathTestCase(10, g, 0, 1499, 3));
+
+            g = rgg.UndirectedGraph(typeof(AdjacencyListsGraph<AVLAdjacencyList>), 1500, 0, 1, 100, true);
+            undirectedWithoutRepetitions.TestCases.Add(new SimpleSecondPathTestCase(10, g, 0, 1499, null));
+            #endregion
+
+            #region custom directed, without repetitions
+            TestSet directedWithoutRepetitions = new TestSet();
+            g = new AdjacencyMatrixGraph(true, 3);
+            g.AddEdge(0, 1, 20);
+            g.AddEdge(0, 2, 30);
+            g.AddEdge(1, 2, 1);
+            g.AddEdge(2, 1, 2);
+            directedWithoutRepetitions.TestCases.Add(new SimpleSecondPathTestCase(10, g, 0, 2, 30));
+
+
+            g = rgg.DirectedGraph(typeof(AdjacencyMatrixGraph), 100, 0.8, 1, 100, true);
+            directedWithoutRepetitions.TestCases.Add(new SimpleSecondPathTestCase(10, g, 0, 99, 6));
+
+            g = rgg.DirectedGraph(typeof(AdjacencyMatrixGraph), 100, 0.5, 1, 100, true);
+            directedWithoutRepetitions.TestCases.Add(new SimpleSecondPathTestCase(10, g, 0, 99, 8));
+
+            g = rgg.DirectedGraph(typeof(AdjacencyMatrixGraph), 100, 0.2, 1, 100, true);
+            directedWithoutRepetitions.TestCases.Add(new SimpleSecondPathTestCase(10, g, 0, 99, 12));
+
+            g = rgg.DirectedGraph(typeof(AdjacencyMatrixGraph), 1000, 0.8, 1, 100, true);
+            directedWithoutRepetitions.TestCases.Add(new SimpleSecondPathTestCase(10, g, 0, 999, 4));
+
+            g = rgg.DirectedGraph(typeof(AdjacencyMatrixGraph), 1000, 0.2, 1, 100, true);
+            directedWithoutRepetitions.TestCases.Add(new SimpleSecondPathTestCase(10, g, 0, 999, 6));
+
+            g = rgg.DirectedGraph(typeof(AdjacencyMatrixGraph), 1000, 1, 1, 100, true);
+            directedWithoutRepetitions.TestCases.Add(new SimpleSecondPathTestCase(10, g, 0, 999, 4));
+
+            g = rgg.DirectedGraph(typeof(AdjacencyListsGraph<AVLAdjacencyList>), 1500, 0.75, 1, 100, true);
+            directedWithoutRepetitions.TestCases.Add(new SimpleSecondPathTestCase(10, g, 0, 1499, 3));
+
+            g = rgg.DirectedGraph(typeof(AdjacencyListsGraph<AVLAdjacencyList>), 1500, 0, 1, 100, true);
+            directedWithoutRepetitions.TestCases.Add(new SimpleSecondPathTestCase(10, g, 0, 1499, null));
+            #endregion
+
+            System.Diagnostics.Stopwatch stopwatch = new System.Diagnostics.Stopwatch();
+            long[] elapsedTime = new long[4];
+
+
+            Console.WriteLine("Custom path with repetitions, undirected graphs");
+            stopwatch.Start();
+            undirectedWithRepetitions.PreformTests(true, false);
+            stopwatch.Stop();
+            elapsedTime[0] = stopwatch.ElapsedMilliseconds;
+
+            Console.WriteLine("Custom path with repetitions, directed graphs");
+            stopwatch.Restart();
+            directedWithRepetitions.PreformTests(true, false);
+            stopwatch.Stop();
+            elapsedTime[1] = stopwatch.ElapsedMilliseconds;
+
+            Console.WriteLine("Custom path without repetitions, undirected graphs");
+            stopwatch.Restart();
+            undirectedWithoutRepetitions.PreformTests(true, false);
+            stopwatch.Stop();
+            elapsedTime[2] = stopwatch.ElapsedMilliseconds;
+
+            Console.WriteLine("Custom path without repetitions, directed graphs");
+            stopwatch.Restart();
+            directedWithoutRepetitions.PreformTests(true, false);
+            stopwatch.Stop();
+            elapsedTime[3] = stopwatch.ElapsedMilliseconds;
+
+            Console.WriteLine(String.Empty);
+            Console.WriteLine(String.Empty);
+            Console.WriteLine("Performance metrics");
+
+            for (int i = 0; i < elapsedTime.Length; i++)
+                Console.WriteLine("Test case {0}: {1,5} ms          ({2:F3} times the boilerplate time)", i + 1, elapsedTime[i], (double)elapsedTime[i] / boilerplateTaskTimeElapsed);
+
+            #endregion
+        }
+
+        static long PerformBoilerplateTask()
+        {
+            RandomGraphGenerator rgg = new RandomGraphGenerator();
+            var stopwatch = System.Diagnostics.Stopwatch.StartNew();
+            Graph boilerplateGraph = rgg.UndirectedGraph(typeof(AdjacencyMatrixGraph), 100, 0.9);
+            int cc;
+            for (int i = 0; i < 500; i++)
+                boilerplateGraph.GeneralSearchAll<EdgesStack>(null, null, null, out cc);
+
+            stopwatch.Stop();
+            return stopwatch.ElapsedMilliseconds;
         }
     }
 }
-
 

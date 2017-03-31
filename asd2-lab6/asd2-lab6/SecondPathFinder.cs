@@ -42,10 +42,10 @@ namespace Pathfinder
             double minDist = double.MaxValue;
 			int c = -1,c2 = -1;
 			Edge tE = new Edge();
+            bool foundSame = false;
             foreach(Edge e in shortestPath)
             {
-                if (e.From == d[b].Last.Value.From)
-                    continue;
+                if (foundSame) break;
                 foreach(Edge e2 in g.OutEdges(e.From))
                 {
                     if (e2.To == e.To)
@@ -58,8 +58,13 @@ namespace Pathfinder
                         c2 = e2.To;
                         minDist = currMin;
                     }
+                    if(currMin == d[b].Dist)
+                    {
+                        break;
+                    }
                 }
             }
+
             if (c2 == -1)
             {
                 path = null;
@@ -96,7 +101,7 @@ namespace Pathfinder
                 z2.Reverse();
                 foreach (Edge e in z2)
                 {
-                    z.Add(new Edge(e.To, e.From));
+                    z.Add(new Edge(e.To, e.From, e.Weight));
                 }
             }
             path = z.ToArray(); // shortestPath1 + tE + shortestPath3
