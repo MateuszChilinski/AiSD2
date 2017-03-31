@@ -33,8 +33,9 @@ namespace ASD
                 int currentVerticle = verticlesStack.Pop();
                 foreach (Edge currentEdge in G.OutEdges(currentVerticle))
                 {
-                    if(visitedVerticles[currentEdge.To] && cycleList.Last() != currentEdge.To)
+                    if(visitedVerticles[currentEdge.To] && cycleList.Count != 0 && cycleList.Last() != currentEdge.To)
                     {
+                        int stopingVerticle = currentEdge.To;
                         cycleList.Add(currentEdge.To);
                         cycleList.Reverse();
                         int currentElement = cycleList.First();
@@ -44,9 +45,13 @@ namespace ASD
                             cycleList.RemoveAt(0);
                             currentElement = cycleList.First();
                         }
-                        while (currentElement != currentVerticle);
+                        while (currentElement != stopingVerticle);
+                        temporaryCycleList.Add(currentElement);
+                        cycleList.RemoveAt(0);
                         k++;
-                        // found cycle!
+
+
+                        // remove from stack
                     }
                     verticlesStack.Push(currentEdge.To);
                 }
