@@ -43,6 +43,13 @@
     <Reference Include="Graph">
       <HintPath>..\..\..\..\..\Desktop\Graph.dll</HintPath>
     </Reference>
+    <Reference Include="System" />
+    <Reference Include="TestLab9">
+      <HintPath>.\TestLab9.dll</HintPath>
+    </Reference>
+    <Reference Include="TestPlatform">
+      <HintPath>.\TestPlatform.dll</HintPath>
+    </Reference>
     <Reference Include="TestSet">
       <HintPath>..\..\..\..\..\Desktop\TestSet.dll</HintPath>
     </Reference>

@@ -51,56 +51,60 @@ static class Muzeum
             }
             GraphExport gz = new GraphExport();
             //gz.Export(g);
-            //gz.Export(nG);
             double z = nG.FordFulkersonDinicMaxFlow(0, g.VerticesCount*2+1, out nG, MaxFlowGraphExtender.DFSBlockingFlow);
 
 
-
-
-            List<List<int>> tmp = new List<List<int>>();
-            HashSet<int> eks = new HashSet<int>();
-            foreach(var y in exits)
+            List<int> tmp = new List<int>();
+            for (int i = 0; i < nG.VerticesCount; i++)
             {
-                eks.Add(y);
+                foreach (var e in nG.OutEdges(i))
+                {
+                    if (e.Weight == 0)
+                    {
+                        nG.DelEdge(e);
+                    }
+                }
             }
+            List<List<int>> tL = new List<List<int>>();
+            for (int k = 0; k < z; k++)
+            {
+                getNext(ref nG, 0, ref tmp);
+                tL.Add(tmp);
+                tmp = new List<int>();
+                for (int i = 0; i < nG.VerticesCount; i++)
+                {
+                    foreach (var e in nG.OutEdges(i))
+                    {
+                        if (e.Weight == 0)
+                        {
+                            nG.DelEdge(e);
+                        }
+                    }
+                }
+            }
+            int[][] tA = new int[(int)z][];
             for(int i = 0; i < z; i++)
             {
-                var inTmp = new List<int>();
-                
-                int curr = 0;
-                HashSet<int> used = new HashSet<int>();
-                bool done = false;
-                while (curr != g.VerticesCount*2+1 && !done)
-                {
-                    if(eks.Contains(curr-1))
-                    {
-                        done = true;
-                    }
-                    if(curr != 0 && curr <= g.VerticesCount && !used.Contains(curr-1))
-                    {
-                        inTmp.Add(curr-1);
-                        used.Add(curr - 1);
-                    }
-                    Edge tmpE = new Edge();
-                    foreach(var e in nG.OutEdges(curr))
-                    {
-                        tmpE = e;
-                        curr = e.To;
-                        break;
-                    }
-                    nG.DelEdge(tmpE);
-                    nG.AddEdge(tmpE.From, tmpE.To, tmpE.Weight - 1);
-                }
-                tmp.Add(inTmp);
+                tA[i] = tL.ToArray()[i].ToArray();
             }
-            int[][] tmpA = new int[tmp.Count][];
-            int k = 0;
-            foreach(var ark in tmp)
-            {
-                tmpA[k++] = ark.ToArray();
-            }
-            return new MuseumRoutes((int)z, tmpA);
+            return new MuseumRoutes((int)z, tA);
        }
+       public static void getNext(ref Graph rG, int curr, ref List<int> tmp)
+        {
+            if (rG.OutEdges(curr).Count() == 0)
+            {
+                return;
+            }
+            else
+            {
+                int f = rG.OutEdges(curr).First().From;
+                int t = rG.OutEdges(curr).First().To;
+                rG.ModifyEdgeWeight(f, t, -1);
+                if (t <= (rG.VerticesCount) / 2 - 1)
+                    tmp.Add(t - 1);
+                getNext(ref rG, t, ref tmp);
+            }
+        }
     }
 }
 
