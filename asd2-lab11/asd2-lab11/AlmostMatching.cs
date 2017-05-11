@@ -61,14 +61,21 @@ public class AlmostMatching
             }
         public static int Search(List<Edge> prevList, List<Edge> allEdges, int[] verts, int used)
         {
+            if (allEdges.Count + prevList.Count < max)
+                return prevList.Count;
             if(allEdges.Count == 0 && used <= allC)
             {
                 if (max <= prevList.Count)
                 {
                     if (max == prevList.Count)
                     {
-                        double tmp_min = (from s in prevList
-                                         select s.Weight).Sum();
+                        double tmp_min = 0.0;
+                        foreach(Edge ed in prevList)
+                        {
+                            tmp_min += ed.Weight;
+                            if(tmp_min >= min)
+                            return prevList.Count;
+                        }
                         if (tmp_min < min)
                         {
                             min = tmp_min;
@@ -77,6 +84,8 @@ public class AlmostMatching
                     }
                     else
                     {
+                        min = (from s in prevList
+                              select s.Weight).Sum();
                         max = prevList.Count;
                         bestList = new List<Edge>(prevList);
                     }
