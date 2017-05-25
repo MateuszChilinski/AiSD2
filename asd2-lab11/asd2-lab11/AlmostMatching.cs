@@ -61,6 +61,8 @@ public class AlmostMatching
             }
         public static int Search(List<Edge> prevList, List<Edge> allEdges, int[] verts, int used)
         {
+            if (used > allC)
+                return -1;
             if (allEdges.Count + prevList.Count < max)
                 return prevList.Count;
             if(allEdges.Count == 0 && used <= allC)
@@ -74,7 +76,7 @@ public class AlmostMatching
                         {
                             tmp_min += ed.Weight;
                             if(tmp_min >= min)
-                            return prevList.Count;
+                                return prevList.Count;
                         }
                         if (tmp_min < min)
                         {
