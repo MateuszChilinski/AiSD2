@@ -46,6 +46,12 @@
     <Reference Include="System.XML" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Xml.Serialization" />
+    <Reference Include="TestLab12">
+      <HintPath>.\TestLab12.dll</HintPath>
+    </Reference>
+    <Reference Include="TestPlatform">
+      <HintPath>.\TestPlatform.dll</HintPath>
+    </Reference>
     <Reference Include="TestSet">
       <HintPath>..\..\..\..\..\Desktop\Graph\TestSet.dll</HintPath>
     </Reference>

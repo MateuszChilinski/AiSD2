@@ -1,104 +1,45 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.IO;
-using System.Runtime.Serialization;  // dodac w projekcie referencje System.Runtime.Serialization i System.XML
+using TestPlatform;
+using TestLab12;
 
 namespace ASD
 {
 
     class Program
     {
-
-        [Serializable]
-        class ClosestPointsTestCase : TestCase
-        {
-            private double Eps = 0.00000001;
-
-            private Tuple<Point, Point> resultP;
-            private double resultD;
-            private Tuple<Point, Point> properResultP;
-            private double properResultD;
-            private bool brute;
-
-            private List<Point> points;
-
-            public ClosestPointsTestCase(double timeLimit, List<Point> points, Tuple<Point, Point> properResultP, double properResultD, bool brute=false) : base(timeLimit, null)
-            {
-                this.properResultP = properResultP;
-                this.properResultD = properResultD;
-                this.points = points;
-                this.brute = brute;
-            }
-
-            public override void PerformTestCase()
-            {
-                resultP = brute ? SweepClosestPair.FindClosestPointsBrute(points, out resultD) : SweepClosestPair.FindClosestPoints(points, out resultD) ;
-            }
-
-            public override void VerifyTestCase(out Result resultCode, out string message)
-            {
-                if( Math.Abs(resultD-properResultD)>Eps )
-                {
-                    resultCode = Result.BadResult;
-                    message = string.Format("Incorrect distance: {0} (expected: {1})", resultD, properResultD);
-                    return;
-                }
-
-                if ((properResultP.Item1 == resultP.Item1 && properResultP.Item2 == resultP.Item2)
-                    || (properResultP.Item1 == resultP.Item2 && properResultP.Item2 == resultP.Item1))
-                {
-                    resultCode = Result.Success;
-                    message = "OK";
-                }
-                else
-                {
-                    resultCode = Result.BadResult;
-                    message = string.Format("Incorrect points: {0} and {1} (expected: {2} and {3})", resultP.Item1, resultP.Item2, properResultP.Item1, properResultP.Item2);
-                }
-            }
-        }
-
-        private class PointsWithResult
-        {
-            public List<Point> points;
-            public double minDistance;
-            public Tuple<Point, Point> pair;
-
-            public PointsWithResult(List<Point> points, Tuple<Point, Point> pair, double minDistance)
-            {
-                this.points = points;
-                this.minDistance = minDistance;
-                this.pair = pair;
-            }
-        }
-
         static void Main(string[] args)
         {
-            DataContractSerializer dcs = new DataContractSerializer(typeof(TestSet), new Type[] { typeof(ClosestPointsTestCase) } );
-            FileStream fs;
+            TestParameters param = new TestParameters();
+            param.ShowPositiveTests = false;                        //Czy wyświetlać pozytywne wyniki
+            param.ShowNegativeTests = true;                         //Czy wyświetlać negatywne wyniki
+            param.ShowTimeoutedTests = true;                        //Czy wyświetlać komunikaty o upływie czasu
+            param.ShowThrownExepctions = true;                      //Czy wyświetlać komunikaty o wyrzuconych wyjątkach
+            param.CatchExeption = true;                             //Czy łapać wyjątki
+            param.WorkOnCopy = false;                               //Czy testować funkcję na kopii argumentów
+            param.TimeoutDelay = TimeSpan.FromMilliseconds(2500);  //Czas na pojedyńcze zapytanie
+            param.NumberOfThreads = 8;     //Ilość wątków
+            TestLab12.TestLab12 Test = new TestLab12.TestLab12(param);
+            Test.FuncitonToTest = (inq) =>
+            {
+                double dist;
+                List<Point> list = new List<Point>(inq.X.Zip(inq.Y, (a, b) => new Point(a, b)));
+                var pair = SweepClosestPair.FindClosestPoints(list, out dist);
+                return new AnswerLab12(new Tuple<double, double>(pair.Item1.x, pair.Item1.y), new Tuple<double, double>(pair.Item2.x, pair.Item2.y), dist);
+            };
+            Test.LoadCases("../../BaseCases");
+            Test.PerformTest();
 
-            Console.WriteLine("Brute force algorithm tests:");
-            fs = new FileStream("STB.dat", FileMode.Open);
-            TestSet simpleTestsBrute = (TestSet)dcs.ReadObject(fs);
-            fs.Close();
-            simpleTestsBrute.PreformTests(true, false);
+            Test.Clear();
+            Test.LoadCases("../../CorrectnessCheck");
+            Test.PerformTest();
 
-            Console.WriteLine("Sweep line algorithm tests:");
-            fs = new FileStream("ST.dat", FileMode.Open);
-            TestSet simpleTests = (TestSet)dcs.ReadObject(fs);
-            fs.Close();
-            simpleTests.PreformTests(true, false);
-
-            Console.WriteLine("Sweep line algorithm performance tests:");
-            fs = new FileStream("PT.dat", FileMode.Open);
-            TestSet performanceTests = (TestSet)dcs.ReadObject(fs);
-            fs.Close();
-            performanceTests.PreformTests(true, true);
+            Test.Clear();
+            Test.LoadCases("../../PerformanceTest");
+            Test.PerformTest();
 
             return;
         }
-
     }
-
 }
